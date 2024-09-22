@@ -1,5 +1,7 @@
 #include <stdio.h>
 
+void print(const int& x) { printf("x = %d\n%p", x, &x); }
+
 int main() {
   const int x = 3;
   // int *p = (int *)&x;
@@ -10,4 +12,6 @@ int main() {
   printf("x = %d\n", *p);
   printf("x address: %p\n", p);
   printf("x address: %p\n", &x);
+
+  print(x);
 }
