@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.20)
+
+project (Intro2CMake CXX)
+
+message(STATUS "PROJECT_NAME: ${PROJECT_NAME}")
+message(STATUS "PROJECT_SOURCE_DIR: ${PROJECT_SOURCE_DIR}")
+message(STATUS "PROJECT_BINARY_DIR: ${PROJECT_BINARY_DIR}")

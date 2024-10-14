@@ -18,6 +18,7 @@ int main() {
   int xy = 10;
   int x1 = 20;
   int x = 5;
+  printf("%d\n", TO_STRING(x));
   printf("%d\n", CONCAT(x, y));    // Accesses variable 'xy'
   printf("%d\n", CONCAT(x, 1));    // Accesses variable 'x1'
 
