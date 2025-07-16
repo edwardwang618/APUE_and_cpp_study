@@ -1,2 +1,25 @@
-build/
+# Bazel-specific directories and files
+/bazel-*
+
+# Bazel workspace files that shouldn't be ignored
+!BUILD
+!WORKSPACE
+!*.bzl
+!.bazelrc
+!.bazelversion
+
+# Other build artifacts
+*.o
+*.a
+*.so
+*.dylib
+
+# IDE specific files
+.vscode/
+.idea/
+*.swp
+*~
+
+# Compiled binaries
+*.exe
 *.out
