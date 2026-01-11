@@ -1,0 +1,41 @@
+[2026-01-04 07:54:22] [ INFO] [main.cc:99] === Server Starting ===
+[2026-01-04 07:54:22] [ INFO] [main.cc:100] Initializing components...
+[2026-01-04 07:54:22] [DEBUG] [main.cc:103] Loading configuration...
+[2026-01-04 07:54:22] [ INFO] [main.cc:104] Configuration loaded
+[2026-01-04 07:54:22] [DEBUG] [main.cc:105] Connecting to database...
+[2026-01-04 07:54:22] [ INFO] [main.cc:106] Database connection established
+[2026-01-04 07:54:22] [DEBUG] [main.cc:62] System monitor started
+[2026-01-04 07:54:22] [DEBUG] [main.cc:68] CPU usage: 45%, Memory usage: 62%
+[2026-01-04 07:54:22] [ INFO] [main.cc:11] User '' attempting to login
+[2026-01-04 07:54:22] [ WARN] [main.cc:16] Login failed: empty credentials for user ''
+[2026-01-04 07:54:22] [ INFO] [main.cc:11] User 'john' attempting to login
+[2026-01-04 07:54:22] [ WARN] [main.cc:22] Login failed: password too short for user 'john'
+[2026-01-04 07:54:22] [ INFO] [main.cc:11] User 'john' attempting to login
+[2026-01-04 07:54:22] [ INFO] [main.cc:27] User 'john' logged in successfully
+[2026-01-04 07:54:22] [ INFO] [main.cc:32] User 'john' logged out
+[2026-01-04 07:54:22] [ INFO] [main.cc:43] Creating order #1001 for user 1, amount: $150.50
+[2026-01-04 07:54:22] [ INFO] [main.cc:55] Order #1001 created successfully
+[2026-01-04 07:54:22] [ INFO] [main.cc:43] Creating order #1002 for user 2, amount: $-50.00
+[2026-01-04 07:54:22] [ERROR] [main.cc:46] Order #1002 failed: invalid amount -50.00
+[2026-01-04 07:54:22] [ INFO] [main.cc:43] Creating order #1003 for user 3, amount: $15000.00
+[2026-01-04 07:54:22] [ WARN] [main.cc:52] Order #1003: large amount $15000.00, requires review
+[2026-01-04 07:54:22] [ INFO] [main.cc:55] Order #1003 created successfully
+[2026-01-04 07:54:22] [ INFO] [main.cc:130] Starting worker threads...
+[2026-01-04 07:54:22] [ INFO] [main.cc:82] Thread 0: processing task 0
+[2026-01-04 07:54:22] [ INFO] [main.cc:82] Thread 2: processing task 0
+[2026-01-04 07:54:22] [ INFO] [main.cc:82] Thread 1: processing task 0
+[2026-01-04 07:54:22] [ INFO] [main.cc:82] Thread 0: processing task 1
+[2026-01-04 07:54:22] [ INFO] [main.cc:82] Thread 2: processing task 1
+[2026-01-04 07:54:22] [ INFO] [main.cc:82] Thread 1: processing task 1
+[2026-01-04 07:54:22] [ INFO] [main.cc:82] Thread 0: processing task 2
+[2026-01-04 07:54:22] [ INFO] [main.cc:82] Thread 1: processing task 2
+[2026-01-04 07:54:22] [ INFO] [main.cc:82] Thread 2: processing task 2
+[2026-01-04 07:54:22] [DEBUG] [main.cc:85] Thread 0: finished
+[2026-01-04 07:54:22] [DEBUG] [main.cc:85] Thread 1: finished
+[2026-01-04 07:54:22] [DEBUG] [main.cc:85] Thread 2: finished
+[2026-01-04 07:54:22] [ INFO] [main.cc:141] All worker threads completed
+[2026-01-04 07:54:22] [ERROR] [main.cc:145] Database connection lost!
+[2026-01-04 07:54:22] [ WARN] [main.cc:146] Attempting to reconnect...
+[2026-01-04 07:54:22] [ INFO] [main.cc:147] Database reconnected
+[2026-01-04 07:54:22] [FATAL] [main.cc:150] Disk space critical: 99% used!
+[2026-01-04 07:54:22] [ INFO] [main.cc:154] === Server Shutting Down ===

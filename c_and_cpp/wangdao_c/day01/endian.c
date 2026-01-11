@@ -8,5 +8,6 @@ int main() {
   else
     printf("big endian\n");
 
-  for (int i = 0; i < sizeof(int); i++) printf("%p: %04d\n", p + i, *(p + i));
+  for (int i = 0; i < sizeof(int); i++)
+    printf("%p: %04d\n", p + i, *(p + i));
 }
