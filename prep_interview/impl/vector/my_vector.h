@@ -1,4 +1,3 @@
-#include <algorithm>
 #include <cstddef>
 #include <cstdlib>
 #include <new>
@@ -71,13 +70,11 @@ public:
   T *erase(T *first, T *last) {
     if (first >= last)
       return first;
-    T *p, *q;
-    for (p = first, q = last; q != end(); p++, q++)
-      *p = std::move(*q);
-
-    for (; p != end(); p++)
-      (*p).~T();
-    size_ -= last - first;
+    move_range(last, end(), first);
+    size_t new_size = size_ - (last - first);
+    for (size_t pos = new_size; pos < size_; pos++)
+      (ptr_ + pos)->~T();
+    size_ = new_size;
     return first;
   }
 
@@ -85,14 +82,11 @@ public:
     T *old_ptr = ptr_;
     ensure_capacity(size_ + 1);
     pos = pos - old_ptr + ptr_;
-    if (pos == end())
-      new (pos) T(value);
-    else {
-      new (ptr_ + size_) T(std::move(ptr_[size_ - 1]));
-      for (T *p = ptr_ + size_ - 1; p != pos; p--)
-        *p = std::move(*(p - 1));
+    move_range_backward(pos, end(), pos + 1);
+    if (pos < end())
       *pos = value;
-    }
+    else
+      new (pos) T(value);
     size_++;
     return pos;
   }
@@ -101,14 +95,11 @@ public:
     T *old_ptr = ptr_;
     ensure_capacity(size_ + 1);
     pos = pos - old_ptr + ptr_;
-    if (pos == end())
-      new (pos) T(std::move(value));
-    else {
-      new (ptr_ + size_) T(std::move(ptr_[size_ - 1]));
-      for (T *p = ptr_ + size_ - 1; p != pos; p--)
-        *p = std::move(*(p - 1));
+    move_range_backward(pos, end(), pos + 1);
+    if (pos < end())
       *pos = std::move(value);
-    }
+    else
+      new (pos) T(std::move(value));
     size_++;
     return pos;
   }
@@ -117,17 +108,12 @@ public:
     T *old_ptr = ptr_;
     ensure_capacity(size_ + count);
     pos = pos - old_ptr + ptr_;
-    for (T *p = ptr_ + size_ + count - 1, *q = ptr_ + size_ - 1;
-         p >= pos + count; p--, q--)
-      if (p >= end())
-        new (p) T(std::move(*q));
+    move_range_backward(pos, end(), pos + count);
+    for (size_t i = 0; i < count; i++)
+      if (pos + i < end())
+        *(pos + i) = value;
       else
-        *p = std::move(*q);
-    for (T *p = pos; p != pos + count; p++)
-      if (p >= end())
-        new (p) T(value);
-      else
-        *p = value;
+        new (pos + i) T(value);
     size_ += count;
     return pos;
   }
@@ -193,6 +179,26 @@ private:
     }
     free(ptr_);
     ptr_ = new_ptr_;
+  }
+
+  // [first, last) guaranteed to exist
+  void move_range(T *first, T *last, T *pos) {
+    for (; first != last; first++, pos++) {
+      if (pos < end())
+        *pos = std::move(*first);
+      else
+        new (pos) T(std::move(*first));
+    }
+  }
+
+  void move_range_backward(T *first, T *last, T *pos) {
+    pos = last - first + pos;
+    for (; last != first; last--, pos--) {
+      if (pos - 1 < end())
+        *(pos - 1) = std::move(*(last - 1));
+      else
+        new (pos - 1) T(std::move(*(last - 1)));
+    }
   }
 
   T *ptr_;
