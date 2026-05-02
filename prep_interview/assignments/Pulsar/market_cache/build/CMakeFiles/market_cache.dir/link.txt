@@ -1,0 +1,1 @@
+/usr/bin/c++ -std=c++23 -O2 -DNDEBUG -labsl_strings -labsl_strings_internal -labsl_base -labsl_raw_logging_internal -labsl_throw_delegate -labsl_spinlock_wait CMakeFiles/market_cache.dir/src/main.cpp.o CMakeFiles/market_cache.dir/src/market_data_cache.cpp.o -o market_cache 

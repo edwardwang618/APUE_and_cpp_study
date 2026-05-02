@@ -1,0 +1,97 @@
+--------------------------------------------------------------------------------
+I1 cache:         16384 B, 64 B, 4-way associative
+D1 cache:         16384 B, 64 B, 4-way associative
+LL cache:         262144 B, 64 B, 8-way associative
+Command:          ./cache_test
+Data file:        cachegrind.out.84884
+Events recorded:  Ir I1mr ILmr Dr D1mr DLmr Dw D1mw DLmw
+Events shown:     Ir I1mr ILmr Dr D1mr DLmr Dw D1mw DLmw
+Event sort order: Ir I1mr ILmr Dr D1mr DLmr Dw D1mw DLmw
+Thresholds:       0.1 100 100 100 100 100 100 100 100
+Include dirs:     
+User annotated:   
+Auto-annotation:  on
+
+--------------------------------------------------------------------------------
+Ir                   I1mr           ILmr           Dr                  D1mr                DLmr                Dw                  D1mw             DLmw             
+--------------------------------------------------------------------------------
+159,005,923 (100.0%) 1,748 (100.0%) 1,482 (100.0%) 20,442,477 (100.0%) 10,640,661 (100.0%) 10,633,510 (100.0%) 22,666,137 (100.0%) 627,662 (100.0%) 626,637 (100.0%)  PROGRAM TOTALS
+
+--------------------------------------------------------------------------------
+Ir                  I1mr         ILmr         Dr                  D1mr                DLmr                Dw                  D1mw             DLmw              file:function
+--------------------------------------------------------------------------------
+90,000,005 (56.60%)   1 ( 0.06%)   1 ( 0.07%) 10,000,000 (48.92%) 10,000,000 (93.98%) 10,000,000 (94.04%) 10,000,000 (44.12%)       0                0           /home/debian/APUE_and_cpp_study/prep_interview/cache/cache_test.cc:strided(std::vector<int, std::allocator<int> >&)
+60,000,004 (37.73%)   1 ( 0.06%)   1 ( 0.07%) 10,000,000 (48.92%)    625,001 ( 5.87%)    625,001 ( 5.88%) 10,000,000 (44.12%)       0                0           /home/debian/APUE_and_cpp_study/prep_interview/cache/cache_test.cc:sequential(std::vector<int, std::allocator<int> >&)
+ 7,500,002 ( 4.72%)   0            0                   0                   0                   0           2,500,000 (11.03%) 625,000 (99.58%) 625,000 (99.74%)  /usr/include/c++/12/bits/stl_algobase.h:main
+   390,446 ( 0.25%)  40 ( 2.29%)  37 ( 2.50%)    144,320 ( 0.71%)      5,052 ( 0.05%)      1,083 ( 0.01%)     66,764 ( 0.29%)      28 ( 0.00%)      15 ( 0.00%)  ./elf/./elf/dl-lookup.c:do_lookup_x
+   328,494 ( 0.21%)   1 ( 0.06%)   1 ( 0.07%)     80,743 ( 0.39%)      2,093 ( 0.02%)      1,724 ( 0.02%)          0                0                0           ./elf/../sysdeps/generic/dl-new-hash.h:_dl_lookup_symbol_x
+
+--------------------------------------------------------------------------------
+-- Auto-annotated source: /home/debian/APUE_and_cpp_study/prep_interview/cache/cache_test.cc
+--------------------------------------------------------------------------------
+Ir                  I1mr       ILmr       Dr                  D1mr                DLmr                Dw                  D1mw       DLmw       
+
+         .          .          .                   .                   .                   .                   .          .          .           // cache_test.cpp
+         .          .          .                   .                   .                   .                   .          .          .           #include <chrono>
+         .          .          .                   .                   .                   .                   .          .          .           #include <iostream>
+         .          .          .                   .                   .                   .                   .          .          .           #include <vector>
+         .          .          .                   .                   .                   .                   .          .          .           
+         .          .          .                   .                   .                   .                   .          .          .           // 顺序访问，cache 友好
+         .          .          .                   .                   .                   .                   .          .          .           void sequential(std::vector<int> &v) {
+30,000,003 (18.87%) 0          0                   0                   0                   0                   0          0          0             for (int i = 0; i < v.size(); i++) {
+30,000,000 (18.87%) 1 ( 0.06%) 1 ( 0.07%) 10,000,000 (48.92%)    625,001 ( 5.87%)    625,001 ( 5.88%) 10,000,000 (44.12%) 0          0               v[i] *= 2;
+         .          .          .                   .                   .                   .                   .          .          .             }
+         1 ( 0.00%) 0          0                   0                   0                   0                   0          0          0           }
+         .          .          .                   .                   .                   .                   .          .          .           
+         .          .          .                   .                   .                   .                   .          .          .           // 随机跳跃访问，cache 不友好
+         .          .          .                   .                   .                   .                   .          .          .           void strided(std::vector<int> &v) {
+40,000,004 (25.16%) 0          0                   0                   0                   0                   0          0          0             for (int i = 0; i < v.size(); i++) {
+50,000,000 (31.45%) 1 ( 0.06%) 1 ( 0.07%) 10,000,000 (48.92%) 10,000,000 (93.98%) 10,000,000 (94.04%) 10,000,000 (44.12%) 0          0               v[(i * 1009) % v.size()] *= 2; // 大步长跳跃
+         .          .          .                   .                   .                   .                   .          .          .             }
+         1 ( 0.00%) 0          0                   0                   0                   0                   0          0          0           }
+         .          .          .                   .                   .                   .                   .          .          .           
+         3 ( 0.00%) 1 ( 0.06%) 1 ( 0.07%)          0                   0                   0                   3 ( 0.00%) 0          0           int main() {
+         .          .          .                   .                   .                   .                   .          .          .             std::vector<int> v(10000000, 1); // 10M 个 int
+         .          .          .                   .                   .                   .                   .          .          .           
+         3 ( 0.00%) 0          0                   0                   0                   0                   0          0          0             sequential(v);
+         2 ( 0.00%) 0          0                   0                   0                   0                   0          0          0             strided(v);
+         .          .          .                   .                   .                   .                   .          .          .           
+         .          .          .                   .                   .                   .                   .          .          .             return 0;
+         9 ( 0.00%) 1 ( 0.06%) 1 ( 0.07%)          6 ( 0.00%)          1 ( 0.00%)          0                   3 ( 0.00%) 0          0           }
+--------------------------------------------------------------------------------
+-- Auto-annotated source: /usr/include/c++/12/bits/stl_algobase.h
+--------------------------------------------------------------------------------
+Ir                 I1mr       ILmr       Dr         D1mr       DLmr       Dw                 D1mw             DLmw             
+
+-- line 913 ----------------------------------------
+        .          .          .          .          .          .                  .                .                .             template<typename _ForwardIterator, typename _Tp>
+        .          .          .          .          .          .                  .                .                .               _GLIBCXX20_CONSTEXPR
+        .          .          .          .          .          .                  .                .                .               inline typename
+        .          .          .          .          .          .                  .                .                .               __gnu_cxx::__enable_if<__is_scalar<_Tp>::__value, void>::__type
+        .          .          .          .          .          .                  .                .                .               __fill_a1(_ForwardIterator __first, _ForwardIterator __last,
+        .          .          .          .          .          .                  .                .                .           	      const _Tp& __value)
+        .          .          .          .          .          .                  .                .                .               {
+        .          .          .          .          .          .                  .                .                .                 const _Tp __tmp = __value;
+5,000,001 ( 3.14%) 0          0          0          0          0                  0                0                0                 for (; __first != __last; ++__first)
+2,500,001 ( 1.57%) 0          0          0          0          0          2,500,000 (11.03%) 625,000 (99.58%) 625,000 (99.74%)  	*__first = __tmp;
+        .          .          .          .          .          .                  .                .                .               }
+        .          .          .          .          .          .                  .                .                .           
+        .          .          .          .          .          .                  .                .                .             // Specialization: for char types we can use memset.
+        .          .          .          .          .          .                  .                .                .             template<typename _Tp>
+        .          .          .          .          .          .                  .                .                .               _GLIBCXX20_CONSTEXPR
+        .          .          .          .          .          .                  .                .                .               inline typename
+        .          .          .          .          .          .                  .                .                .               __gnu_cxx::__enable_if<__is_byte<_Tp>::__value, void>::__type
+        .          .          .          .          .          .                  .                .                .               __fill_a1(_Tp* __first, _Tp* __last, const _Tp& __c)
+-- line 930 ----------------------------------------
+
+--------------------------------------------------------------------------------
+The following files chosen for auto-annotation could not be found:
+--------------------------------------------------------------------------------
+  ./elf/../sysdeps/generic/dl-new-hash.h
+  ./elf/./elf/dl-lookup.c
+
+--------------------------------------------------------------------------------
+Ir                   I1mr       ILmr       Dr                  D1mr                DLmr                Dw                  D1mw             DLmw             
+--------------------------------------------------------------------------------
+157,500,028 (99.05%) 4 ( 0.23%) 4 ( 0.27%) 20,000,006 (97.84%) 10,625,002 (99.85%) 10,625,001 (99.92%) 22,500,006 (99.27%) 625,000 (99.58%) 625,000 (99.74%)  events annotated
+

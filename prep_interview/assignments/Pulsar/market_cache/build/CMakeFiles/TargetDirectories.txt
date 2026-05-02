@@ -1,0 +1,4 @@
+/home/debian/APUE_and_cpp_study/prep_interview/assignments/market_cache/build/CMakeFiles/market_cache.dir
+/home/debian/APUE_and_cpp_study/prep_interview/assignments/market_cache/build/CMakeFiles/tests.dir
+/home/debian/APUE_and_cpp_study/prep_interview/assignments/market_cache/build/CMakeFiles/edit_cache.dir
+/home/debian/APUE_and_cpp_study/prep_interview/assignments/market_cache/build/CMakeFiles/rebuild_cache.dir
